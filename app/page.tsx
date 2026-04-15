@@ -2,29 +2,18 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import {
-  ArrowRight,
-  CalendarClock,
-  HeartHandshake,
-  Menu,
-  ShieldCheck,
-  Trophy,
-  X,
-} from "lucide-react"
+import { ArrowRight, CheckCircle2, Menu, X } from "lucide-react"
+import { CaseHospitalLogo } from "@/components/brand/CaseHospitalLogo"
 import { Button } from "@/components/ui/button"
+import { caseHospitalEligibleServices } from "@/lib/content/caseHospitalLoyalty"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { href: "#care", label: "Care" },
-  { href: "#platform", label: "Platform" },
-  { href: "#journeys", label: "Journeys" },
+  { href: "#benefits", label: "Benefits" },
+  { href: "#services", label: "Services" },
 ]
 
-const highlights = [
-  { title: "Medication rhythm", copy: "Refills, reminders, and adherence stay visible without feeling noisy." },
-  { title: "Clear operations", copy: "Care teams manage patients, appointments, and verification in one flow." },
-  { title: "Meaningful rewards", copy: "Healthy actions connect directly to loyalty value and retention." },
-]
+const trustSignals = ["Advance top-ups", "5% bonus", "24-hour credit"]
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false)
@@ -38,6 +27,10 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
+      <a href="#main-content" className="skip-link">
+        Skip to content
+      </a>
+
       <header
         className={cn(
           "fixed inset-x-0 top-0 z-50 transition-all",
@@ -46,12 +39,10 @@ export default function LandingPage() {
       >
         <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-5 py-4 md:px-8">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-              <HeartHandshake className="h-4 w-4" />
-            </div>
+            <CaseHospitalLogo width={88} height={58} />
             <div>
-              <p className="text-base font-semibold">NH263Care</p>
-              <p className="text-[11px] tracking-[0.14em] text-muted-foreground uppercase">Care platform</p>
+              <p className="text-base font-semibold">Case Hospital</p>
+              <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Loyalty card program</p>
             </div>
           </Link>
 
@@ -76,7 +67,7 @@ export default function LandingPage() {
           </div>
 
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-background md:hidden"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-border/80 bg-background/90 md:hidden"
             onClick={() => setMobileMenuOpen((value) => !value)}
             aria-label="Toggle navigation"
           >
@@ -105,114 +96,88 @@ export default function LandingPage() {
         )}
       </header>
 
-      <main className="px-5 pb-20 pt-28 md:px-8 md:pt-32">
-        <section className="mx-auto max-w-7xl">
-          <div className="max-w-4xl">
-            <span className="eyebrow">Healthcare loyalty, simplified</span>
-            <h1 className="mt-6 text-4xl font-semibold leading-tight text-foreground md:text-6xl">
-              A calmer way to manage adherence, appointments, and patient loyalty.
-            </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
-              NH263Care brings patient engagement and care operations into one clean experience for patients and
-              administrators.
-            </p>
+      <main id="main-content" className="px-5 pb-20 pt-28 md:px-8 md:pt-32">
+        <section className="mx-auto max-w-6xl">
+          <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+            <div className="max-w-3xl">
+              <span className="eyebrow">Case Hospital loyalty card</span>
+              <h1 className="mt-6 text-4xl font-semibold leading-tight text-foreground md:text-6xl">
+                Advance deposits and bonus rewards for everyday care.
+              </h1>
+              <p className="mt-5 max-w-2xl text-base leading-8 text-muted-foreground md:text-lg">
+                Top up in advance, earn a 5 percent bonus on cash deposits, and manage your card and wallet from one patient account.
+              </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link href="/login">
-                <Button size="lg">
-                  Open patient or admin portal
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <a href="#care">
-                <Button size="lg" variant="outline">
-                  Learn more
-                </Button>
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-14 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="glass-panel rounded-[1.5rem] p-6 md:p-7">
-              <div className="grid gap-5 md:grid-cols-3">
-                <div>
-                  <p className="text-sm text-muted-foreground">Patients supported</p>
-                  <p className="mt-2 text-3xl font-semibold">24/7</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Care visibility</p>
-                  <p className="mt-2 text-3xl font-semibold">One view</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground">Retention model</p>
-                  <p className="mt-2 text-3xl font-semibold">Loyalty-led</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="rounded-[1.5rem] border border-border/80 bg-secondary/55 p-6">
-              <p className="text-sm text-muted-foreground">What the platform keeps in sync</p>
-              <div className="mt-5 space-y-3">
-                {[
-                  "Medication reminders and refill timing",
-                  "Appointment scheduling and follow-up",
-                  "Rewards, quizzes, and patient engagement",
-                ].map((item) => (
-                  <div key={item} className="rounded-xl bg-background px-4 py-3 text-sm text-foreground">
-                    {item}
+              <div className="mt-6 flex flex-wrap gap-2">
+                {trustSignals.map((signal) => (
+                  <div
+                    key={signal}
+                    className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border/80 bg-background/90 px-4 py-2 text-sm text-foreground shadow-[var(--shadow-soft)]"
+                  >
+                    <CheckCircle2 className="h-4 w-4 text-accent" />
+                    <span>{signal}</span>
                   </div>
                 ))}
               </div>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Link href="/login">
+                  <Button size="lg">
+                    Open patient or admin portal
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <a href="#services">
+                  <Button size="lg" variant="outline">
+                    View eligible services
+                  </Button>
+                </a>
+              </div>
+            </div>
+
+            <div className="case-panel rounded-[1.8rem] p-6 md:p-7">
+              <CaseHospitalLogo width={118} height={76} />
+              <div className="mt-6 space-y-4">
+                <div className="rounded-[1.2rem] border border-border/70 bg-background px-4 py-4">
+                  <p className="text-sm text-muted-foreground">Cash top-up bonus</p>
+                  <p className="mt-1 text-3xl font-semibold">5%</p>
+                </div>
+                <div className="rounded-[1.2rem] border border-border/70 bg-background px-4 py-4">
+                  <p className="text-sm text-muted-foreground">Credit timing</p>
+                  <p className="mt-1 text-3xl font-semibold">Within 24 hrs</p>
+                </div>
+                <div className="rounded-[1.2rem] border border-border/70 bg-background px-4 py-4">
+                  <p className="text-sm text-muted-foreground">Verification</p>
+                  <p className="mt-1 text-base font-semibold">Physical card, card number, or registered phone.</p>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
 
-        <section id="care" className="mx-auto mt-20 grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <span className="eyebrow">Core value</span>
-            <h2 className="mt-5 section-heading">Designed to feel clean, not crowded.</h2>
-            <p className="mt-4 section-copy">
-              The platform should feel dependable and easy to scan. The experience focuses on the next action instead
-              of surrounding every detail with heavy visual framing.
-            </p>
+          <div id="benefits" className="mt-12 grid gap-4 md:grid-cols-3">
+            <div className="case-panel rounded-[1.5rem] p-5">
+              <p className="text-sm text-muted-foreground">Top up in advance</p>
+              <p className="mt-2 text-base leading-7 text-foreground">Keep money ready for visits and routine care.</p>
+            </div>
+            <div className="case-panel rounded-[1.5rem] p-5">
+              <p className="text-sm text-muted-foreground">Earn bonus points</p>
+              <p className="mt-2 text-base leading-7 text-foreground">Receive a 5 percent bonus on each cash top-up.</p>
+            </div>
+            <div className="case-panel rounded-[1.5rem] p-5">
+              <p className="text-sm text-muted-foreground">Manage everything in settings</p>
+              <p className="mt-2 text-base leading-7 text-foreground">Card details, wallet guidance, and FAQs live in one place.</p>
+            </div>
           </div>
 
-          <div id="platform" className="grid gap-4 md:grid-cols-3">
-            {highlights.map((item, index) => {
-              const icons = [CalendarClock, ShieldCheck, Trophy]
-              const Icon = icons[index]
-              return (
-                <div key={item.title} className="rounded-[1.25rem] border border-border/80 bg-background p-5">
-                  <Icon className="h-5 w-5 text-primary" />
-                  <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-7 text-muted-foreground">{item.copy}</p>
+          <div id="services" className="mt-12 case-panel rounded-[1.5rem] p-6">
+            <p className="text-sm text-muted-foreground">Eligible bonus-point services</p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {caseHospitalEligibleServices.map((item) => (
+                <div key={item} className="rounded-xl border border-border/70 bg-background px-4 py-3 text-sm">
+                  {item}
                 </div>
-              )
-            })}
-          </div>
-        </section>
-
-        <section id="journeys" className="mx-auto mt-20 max-w-7xl rounded-[1.5rem] border border-border/80 bg-background p-6 md:p-8">
-          <div className="grid gap-6 lg:grid-cols-3">
-            {[
-              {
-                title: "Enroll patients clearly",
-                copy: "Capture onboarding and verification information without creating friction.",
-              },
-              {
-                title: "Keep the journey visible",
-                copy: "Show medications, visits, and milestones in a way that is easy to follow.",
-              },
-              {
-                title: "Reward follow-through",
-                copy: "Tie healthy actions to loyalty benefits patients can actually understand.",
-              },
-            ].map((item) => (
-              <div key={item.title}>
-                <h3 className="text-lg font-semibold">{item.title}</h3>
-                <p className="mt-2 text-sm leading-7 text-muted-foreground">{item.copy}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
       </main>

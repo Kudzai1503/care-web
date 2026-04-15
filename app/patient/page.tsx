@@ -1,18 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowRight, CalendarDays, CheckCircle2, Clock3, Gift, Star, Trophy } from "lucide-react"
+import { ArrowRight, CalendarDays, CheckCircle2, Clock3, Gift, Star, WalletCards } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Progress } from "@/components/ui/progress"
 import { cn, formatDate, getPrescriptionStatusClasses } from "@/lib/utils"
-
-const patient = {
-  name: "Jennifer Cole",
-  loyaltyTier: "Gold",
-  points: 7250,
-  nextTier: "Platinum",
-  pointsToNext: 2750,
-}
+import { formatCurrency, getCaseLoyaltySnapshot, legacyEngagementSummary } from "@/lib/loyalty"
 
 const medicationMoments = [
   { name: "Metformin 500mg", time: "8:00 AM", status: "taken" },
@@ -31,33 +23,51 @@ const rewards = [
 ]
 
 export default function PatientDashboard() {
-  const progressToNextTier = ((10000 - patient.pointsToNext) / 10000) * 100
+  const snapshot = getCaseLoyaltySnapshot(new Date("2026-04-15T10:30:00.000Z"))
   const takenCount = medicationMoments.filter((medication) => medication.status === "taken").length
 
   return (
     <div className="space-y-6">
-      <section className="rounded-[1.5rem] border border-border/80 bg-background p-6 md:p-8">
+      <section className="clinical-surface rounded-[1.5rem] p-6 md:p-8">
         <p className="text-sm text-muted-foreground">Today</p>
         <h1 className="mt-3 max-w-3xl text-3xl font-semibold leading-tight md:text-4xl">
-          Welcome back, {patient.name.split(" ")[0]}.
+          Welcome back, {snapshot.account.fullName.split(" ")[0]}.
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-7 text-muted-foreground">
-          Your medications, appointments, and rewards are organized in one place so the next step stays clear.
+          Your medications, appointments, and wallet details are organized in one place so the next step stays clear.
         </p>
 
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <div className="mt-6 grid gap-3 sm:grid-cols-4">
           <div className="rounded-[1rem] border border-border/80 bg-secondary/45 p-4">
-            <p className="text-sm text-muted-foreground">Points</p>
-            <p className="mt-2 text-2xl font-semibold">{patient.points.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">Stored value</p>
+            <p className="mt-2 text-2xl font-semibold">{formatCurrency(snapshot.wallet.storedValueBalance)}</p>
+          </div>
+          <div className="rounded-[1rem] border border-border/80 bg-secondary/45 p-4">
+            <p className="text-sm text-muted-foreground">Available bonus points</p>
+            <p className="mt-2 text-2xl font-semibold">{snapshot.wallet.availablePoints.toLocaleString()}</p>
+          </div>
+          <div className="rounded-[1rem] border border-border/80 bg-secondary/45 p-4">
+            <p className="text-sm text-muted-foreground">Pending 24-hour bonus</p>
+            <p className="mt-2 text-2xl font-semibold">{snapshot.wallet.pendingPoints.toLocaleString()}</p>
           </div>
           <div className="rounded-[1rem] border border-border/80 bg-secondary/45 p-4">
             <p className="text-sm text-muted-foreground">Today&apos;s progress</p>
             <p className="mt-2 text-2xl font-semibold">{takenCount}/3</p>
           </div>
-          <div className="rounded-[1rem] border border-border/80 bg-secondary/45 p-4">
-            <p className="text-sm text-muted-foreground">Tier</p>
-            <p className="mt-2 text-2xl font-semibold">{patient.loyaltyTier}</p>
-          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Button asChild>
+            <Link href="/patient/wallet">
+              <WalletCards className="h-4 w-4" />
+              Open wallet
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link href="/patient/settings">
+              View profile
+            </Link>
+          </Button>
         </div>
       </section>
 
@@ -91,43 +101,27 @@ export default function PatientDashboard() {
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div className="rounded-[1.25rem] border border-border/80 bg-background p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Tier progress</p>
-                <h2 className="mt-1 text-xl font-semibold">{patient.loyaltyTier} member</h2>
-              </div>
-              <Trophy className="h-4 w-4 text-primary" />
+        <div className="rounded-[1.25rem] border border-border/80 bg-background p-5">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Appointments</p>
+              <h2 className="mt-1 text-xl font-semibold">Upcoming</h2>
             </div>
-            <p className="mt-3 text-sm text-muted-foreground">{patient.pointsToNext} points to {patient.nextTier}</p>
-            <div className="mt-4">
-              <Progress value={progressToNextTier} />
-            </div>
+            <CalendarDays className="h-4 w-4 text-muted-foreground" />
           </div>
-
-          <div className="rounded-[1.25rem] border border-border/80 bg-background p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Appointments</p>
-                <h2 className="mt-1 text-xl font-semibold">Upcoming</h2>
+          <div className="mt-4 space-y-3">
+            {upcomingAppointments.map((appointment) => (
+              <div key={`${appointment.date}-${appointment.time}`} className="rounded-[1rem] border border-border/70 px-4 py-4">
+                <p className="font-medium">{appointment.type}</p>
+                <p className="text-sm text-muted-foreground">{appointment.doctor}</p>
+                <p className="mt-2 text-sm">{formatDate(appointment.date)} at {appointment.time}</p>
               </div>
-              <CalendarDays className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="mt-4 space-y-3">
-              {upcomingAppointments.map((appointment) => (
-                <div key={`${appointment.date}-${appointment.time}`} className="rounded-[1rem] border border-border/70 px-4 py-4">
-                  <p className="font-medium">{appointment.type}</p>
-                  <p className="text-sm text-muted-foreground">{appointment.doctor}</p>
-                  <p className="mt-2 text-sm">{formatDate(appointment.date)} at {appointment.time}</p>
-                </div>
-              ))}
-            </div>
-            <Link href="/patient/appointments" className="mt-4 inline-flex items-center gap-2 text-sm text-primary">
-              Manage appointments
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+            ))}
           </div>
+          <Link href="/patient/appointments" className="mt-4 inline-flex items-center gap-2 text-sm text-primary">
+            Manage appointments
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </section>
 
@@ -136,7 +130,7 @@ export default function PatientDashboard() {
           <div className="mb-4 flex items-center justify-between">
             <div>
               <p className="text-sm text-muted-foreground">Rewards</p>
-              <h2 className="mt-1 text-xl font-semibold">Available now</h2>
+              <h2 className="mt-1 text-xl font-semibold">Legacy engagement rewards</h2>
             </div>
             <Gift className="h-4 w-4 text-muted-foreground" />
           </div>
@@ -148,6 +142,9 @@ export default function PatientDashboard() {
               </div>
             ))}
           </div>
+          <p className="mt-4 text-sm leading-7 text-muted-foreground">
+            These points remain separate from your Case Hospital stored-value wallet and 5 percent top-up bonus points.
+          </p>
         </div>
 
         <div className="rounded-[1.25rem] border border-border/80 bg-background p-5">
@@ -162,7 +159,7 @@ export default function PatientDashboard() {
             {[
               "Take your noon medication on time.",
               "Prepare for your April 10 follow-up.",
-              "Use your points when a reward is useful.",
+              `Review your wallet before using ${legacyEngagementSummary.points.toLocaleString()} engagement points.`,
             ].map((item) => (
               <div key={item} className="rounded-[1rem] border border-border/70 px-4 py-4 text-sm text-muted-foreground">
                 {item}

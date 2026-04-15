@@ -3,7 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ArrowLeft, HeartHandshake, Shield, User } from "lucide-react"
+import { ArrowLeft, Shield, User } from "lucide-react"
+import { CaseHospitalLogo } from "@/components/brand/CaseHospitalLogo"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -12,7 +13,7 @@ import { cn } from "@/lib/utils"
 type Role = "patient" | "admin"
 
 const roleOptions: { value: Role; label: string; hint: string; icon: typeof User }[] = [
-  { value: "patient", label: "Patient portal", hint: "Medications, appointments, rewards, and quizzes.", icon: User },
+  { value: "patient", label: "Patient portal", hint: "Medications, appointments, wallet, and settings.", icon: User },
   { value: "admin", label: "Admin console", hint: "Patients, reminders, onboarding, and verification.", icon: Shield },
 ]
 
@@ -38,10 +39,12 @@ export default function LoginPage() {
             </Link>
 
             <div className="mt-16 max-w-md">
-              <p className="text-sm text-muted-foreground">NH263Care access</p>
-              <h1 className="mt-4 text-4xl font-semibold leading-tight">One login for the care side you manage today.</h1>
+              <CaseHospitalLogo width={132} height={86} />
+              <p className="mt-8 text-sm text-primary">Case Hospital loyalty access</p>
+              <h1 className="mt-4 text-4xl font-semibold leading-tight">One login for patient care and loyalty operations.</h1>
               <p className="mt-4 text-base leading-8 text-muted-foreground">
-                Patients stay on top of their care journey. Administrators keep the full workflow moving.
+                Patients can open their wallet and loyalty card. Administrators can keep onboarding, support, and
+                verification moving.
               </p>
             </div>
           </section>
@@ -49,11 +52,9 @@ export default function LoginPage() {
           <section className="flex items-center px-5 py-10 sm:px-8 lg:px-12">
             <div className="mx-auto w-full max-w-md">
               <Link href="/" className="mb-8 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                  <HeartHandshake className="h-4 w-4" />
-                </div>
+                <CaseHospitalLogo width={88} height={58} />
                 <div>
-                  <p className="text-base font-semibold">NH263Care</p>
+                  <p className="text-base font-semibold">Case Hospital</p>
                   <p className="text-[11px] uppercase tracking-[0.14em] text-muted-foreground">Secure access</p>
                 </div>
               </Link>

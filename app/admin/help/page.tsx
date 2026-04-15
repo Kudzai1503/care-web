@@ -1,10 +1,11 @@
 import { BookOpen, LifeBuoy, MessageSquareHeart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { AdminHeader } from "@/components/admin/admin-header"
+import { caseHospitalSupport } from "@/lib/content/caseHospitalLoyalty"
 
 export default function AdminHelpPage() {
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,252,247,0.72),rgba(246,238,227,0.76))] shadow-[var(--shadow-soft)]">
+    <div className="overflow-hidden rounded-[2rem] border border-border/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.9),rgba(240,240,236,0.98))] shadow-[var(--shadow-soft)]">
       <AdminHeader title="Help" description="Support material and escalation paths for the admin team." showSearch={false} />
 
       <div className="grid gap-4 px-5 py-6 md:grid-cols-3 md:px-8 md:py-8">
@@ -17,7 +18,7 @@ export default function AdminHelpPage() {
           {
             icon: LifeBuoy,
             title: "Support desk",
-            copy: "A placeholder support surface so admins do not hit a dead route from the sidebar.",
+            copy: `Hotline ${caseHospitalSupport.hotline}, WhatsApp ${caseHospitalSupport.whatsapp}, and ${caseHospitalSupport.primaryEmail}.`,
           },
           {
             icon: MessageSquareHeart,

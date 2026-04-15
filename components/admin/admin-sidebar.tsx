@@ -9,7 +9,6 @@ import {
   ChevronRight,
   FileCheck2,
   Gift,
-  HeartHandshake,
   HelpCircle,
   LayoutDashboard,
   LogOut,
@@ -20,6 +19,7 @@ import {
   Users,
   Pill,
 } from "lucide-react"
+import { CaseHospitalLogo } from "@/components/brand/CaseHospitalLogo"
 import { cn } from "@/lib/utils"
 import {
   Tooltip,
@@ -35,7 +35,7 @@ const navItems = [
   { href: "/admin/appointments", icon: CalendarDays, label: "Appointments" },
   { href: "/admin/prescriptions", icon: Pill, label: "Prescriptions" },
   { href: "/admin/reminders", icon: Bell, label: "Reminders" },
-  { href: "/admin/rewards", icon: Gift, label: "Rewards" },
+  { href: "/admin/rewards", icon: Gift, label: "Loyalty" },
   { href: "/admin/verification", icon: FileCheck2, label: "Verification" },
 ]
 
@@ -96,12 +96,10 @@ export function AdminSidebar({ expanded, onToggle, darkMode, onDarkModeToggle }:
       >
         <div className={cn("mb-6 flex items-center", expanded ? "justify-between px-2" : "justify-center")}>
           <Link href="/admin" className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
-              <HeartHandshake className="h-5 w-5" />
-            </div>
+            <CaseHospitalLogo width={72} height={48} />
             {expanded && (
               <div>
-                <p className="text-lg font-semibold leading-none text-sidebar-foreground">NH263Care</p>
+                <p className="text-lg font-semibold leading-none text-sidebar-foreground">Case Hospital</p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.24em] text-sidebar-foreground/55">Admin suite</p>
               </div>
             )}
@@ -111,9 +109,9 @@ export function AdminSidebar({ expanded, onToggle, darkMode, onDarkModeToggle }:
         {expanded && (
           <div className="mb-6 rounded-[1.6rem] border border-sidebar-border/70 bg-sidebar-accent/70 p-4">
             <p className="text-[11px] uppercase tracking-[0.24em] text-sidebar-foreground/56">Today&apos;s focus</p>
-            <p className="mt-3 text-2xl font-semibold leading-tight text-sidebar-foreground">Care operations</p>
+            <p className="mt-3 text-2xl font-semibold leading-tight text-sidebar-foreground">Loyalty operations</p>
             <p className="mt-2 text-sm leading-6 text-sidebar-foreground/66">
-              Keep onboarding, reminders, appointments, and verification moving with calm urgency.
+              Keep onboarding, support, appointments, and verification moving with calm urgency.
             </p>
           </div>
         )}

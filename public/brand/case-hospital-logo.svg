@@ -1,0 +1,18 @@
+<svg width="320" height="210" viewBox="0 0 320 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Case Hospital</title>
+  <rect width="320" height="210" fill="transparent"/>
+  <g transform="translate(56 8)">
+    <path d="M56 0H86V30H112V60H86V118H56V60H0V30H56V0Z" fill="#2AB460"/>
+    <path d="M64 0H78V38H112V52H78V118H64V52H0V38H64V0Z" fill="#007858"/>
+    <path d="M18 30H30V48H56V60H18V30Z" fill="#57C680"/>
+    <path d="M82 30H112V60H100V48H82V30Z" fill="#57C680"/>
+  </g>
+  <g fill="#007858" font-family="Figtree, Arial, sans-serif" text-anchor="middle">
+    <text x="160" y="148" font-size="35" font-weight="500" letter-spacing="0.03em">CASE</text>
+    <text x="160" y="178" font-size="35" font-weight="500" letter-spacing="0.03em">HOSPITAL</text>
+  </g>
+  <text x="160" y="194" fill="#4B6E68" font-family="Noto Sans, Arial, sans-serif" font-size="11" letter-spacing="0.18em" text-anchor="middle">
+    FLUENT IN HEALTH CARE
+  </text>
+  <rect x="90" y="200" width="140" height="6" rx="3" fill="#2AB460"/>
+</svg>

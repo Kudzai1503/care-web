@@ -1,13 +1,10 @@
 "use client"
 
-import { Gift, Trophy, Tag, CheckCircle2, Lock } from "lucide-react"
+import Link from "next/link"
+import { Gift, Trophy, Tag, CheckCircle2, Lock, WalletCards } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-
-const patient = {
-  points: 7250,
-  tier: "Gold",
-}
+import { getCaseLoyaltySnapshot, legacyEngagementSummary } from "@/lib/loyalty"
 
 interface Reward {
   id: string
@@ -33,33 +30,48 @@ const redeemedRewards = [
 ]
 
 export default function RewardsPage() {
+  const snapshot = getCaseLoyaltySnapshot(new Date("2026-04-15T10:30:00.000Z"))
+
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold">Rewards</h1>
-        <p className="text-muted-foreground">Redeem your points for exclusive rewards</p>
+        <h1 className="text-2xl font-bold">Rewards and wallet guidance</h1>
+        <p className="text-muted-foreground">
+          Engagement rewards stay preserved here. Case Hospital wallet balances and restricted bonus redemptions live
+          in the dedicated wallet.
+        </p>
       </div>
 
-      {/* Points Balance */}
-      <div className="mb-8 rounded-2xl border border-border bg-gradient-to-br from-primary/10 to-primary/5 p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-8 case-panel rounded-2xl p-6">
+        <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">Available Points</p>
-            <p className="text-4xl font-bold">{patient.points.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground">Legacy engagement points</p>
+            <p className="text-4xl font-bold">{legacyEngagementSummary.points.toLocaleString()}</p>
           </div>
           <div className="flex items-center gap-2">
             <Trophy className="h-5 w-5 text-yellow-500" />
-            <span className="font-semibold text-yellow-600">{patient.tier} Member</span>
+            <span className="font-semibold text-yellow-600">{legacyEngagementSummary.tier} Member</span>
+          </div>
+          <div className="rounded-[1rem] border border-border bg-background px-4 py-3">
+            <p className="text-sm text-muted-foreground">Case wallet</p>
+            <p className="mt-1 font-semibold">
+              {snapshot.wallet.availablePoints.toLocaleString()} bonus points | {snapshot.wallet.storedValueBalance.toLocaleString()} UGX
+            </p>
+            <Button asChild variant="outline" size="sm" className="mt-3">
+              <Link href="/patient/wallet">
+                <WalletCards className="h-4 w-4" />
+                Open wallet
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Available Rewards */}
       <div className="mb-8">
-        <h2 className="mb-4 text-lg font-semibold">Available Rewards</h2>
+        <h2 className="mb-4 text-lg font-semibold">Available engagement rewards</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {rewards.map((reward) => {
-            const canAfford = patient.points >= reward.pointsCost
+            const canAfford = legacyEngagementSummary.points >= reward.pointsCost
             return (
               <div
                 key={reward.id}
@@ -91,7 +103,7 @@ export default function RewardsPage() {
                   {canAfford ? "Redeem" : (
                     <span className="flex items-center gap-1.5">
                       <Lock className="h-4 w-4" />
-                      {(reward.pointsCost - patient.points).toLocaleString()} pts needed
+                      {(reward.pointsCost - legacyEngagementSummary.points).toLocaleString()} pts needed
                     </span>
                   )}
                 </Button>
@@ -101,9 +113,17 @@ export default function RewardsPage() {
         </div>
       </div>
 
-      {/* Redeemed Rewards */}
+      <div className="mb-8 case-panel rounded-[1.75rem] p-5">
+        <h2 className="text-lg font-semibold">Case loyalty wallet rules</h2>
+        <ul className="mt-4 space-y-2 text-sm leading-7 text-muted-foreground">
+          <li>Cash top-ups earn a 5 percent bonus credited within 24 hours.</li>
+          <li>Bonus points are redeemable only for Laboratory, Pharmacy, Radiology, and Doctor’s Consultation Fees.</li>
+          <li>Bonus rewards are non-transferable and can only be used by the account holder.</li>
+        </ul>
+      </div>
+
       <div>
-        <h2 className="mb-4 text-lg font-semibold">Redeemed Rewards</h2>
+        <h2 className="mb-4 text-lg font-semibold">Redeemed engagement rewards</h2>
         <div className="space-y-3">
           {redeemedRewards.map((reward, index) => (
             <div

@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
-export default function QuizzesPage() {
+export default function LoyaltyCardPage() {
   redirect("/patient/settings")
 }

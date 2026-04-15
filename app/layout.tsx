@@ -9,8 +9,9 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'NH263Care | Loyalty-led Healthcare Experience',
-  description: 'Healthcare loyalty platform for medication adherence, patient retention, and warmer care journeys.',
+  title: 'Case Hospital | Loyalty Card Experience',
+  description:
+    'Case Hospital loyalty card experience for wallet top-ups, 5 percent bonus rewards, and patient care access.',
   icons: {
     icon: [
       {

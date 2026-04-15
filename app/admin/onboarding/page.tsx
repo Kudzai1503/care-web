@@ -356,23 +356,22 @@ export default function OnboardingPage() {
                       <Gift className="h-6 w-6" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">NH263Care Rewards</h3>
+                      <h3 className="font-semibold">Case Hospital Loyalty Card</h3>
                       <p className="text-sm text-muted-foreground">
-                        Earn points for medication adherence, appointments, and
-                        health activities
+                        Enroll the patient into the stored-value wallet and bonus-points program.
                       </p>
                       <ul className="mt-3 space-y-2 text-sm">
                         <li className="flex items-center gap-2">
                           <Check className="h-4 w-4 text-primary" />
-                          50 points for each prescription pickup
+                          Patients can deposit funds in advance for future care.
                         </li>
                         <li className="flex items-center gap-2">
                           <Check className="h-4 w-4 text-primary" />
-                          100 points for completing health quizzes
+                          Each cash top-up earns a 5 percent bonus credited within 24 hours.
                         </li>
                         <li className="flex items-center gap-2">
                           <Check className="h-4 w-4 text-primary" />
-                          200 points for attending appointments
+                          Bonus points redeem only for the documented clinical service categories.
                         </li>
                       </ul>
                     </div>
@@ -390,10 +389,10 @@ export default function OnboardingPage() {
                     />
                     <div>
                       <span className="font-medium">
-                        Enroll in NH263 Rewards
+                        Enroll in Case Hospital loyalty
                       </span>
                       <p className="text-sm text-muted-foreground">
-                        Patient will start earning points immediately
+                        Patient wallet access and loyalty-card verification will be enabled.
                       </p>
                     </div>
                   </label>

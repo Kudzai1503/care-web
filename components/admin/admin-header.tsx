@@ -26,13 +26,13 @@ export function AdminHeader({ title, showSearch = true, description }: AdminHead
           {showSearch && (
             <div className="relative min-w-0 sm:w-80">
               <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Search patients, prescriptions, reminders..." className="pl-11" />
+              <Input placeholder="Search patients, card numbers, reminders..." className="pl-11" />
             </div>
           )}
 
           <Button variant="outline" className="gap-2">
             <Sparkles className="h-4 w-4" />
-            Priority cues
+            Priority queue
           </Button>
 
           <Button variant="ghost" size="icon" className="relative">
